@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kaiss Redouane — Chercheur en économie de l'eau &amp; économétrie appliquée</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['-apple-system','BlinkMacSystemFont','"SF Pro Display"','"SF Pro Text"','Inter','"Helvetica Neue"','Arial','sans-serif'],
+        },
+        colors: {
+          border: 'hsl(var(--border))',
+          input: 'hsl(var(--input))',
+          ring: 'hsl(var(--ring))',
+          background: 'hsl(var(--background))',
+          foreground: 'hsl(var(--foreground))',
+          primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+          secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+          muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+          accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+          card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+          gold: { DEFAULT: 'hsl(var(--gold))', foreground: 'hsl(var(--gold-foreground))' },
+        },
+        borderRadius: {
+          lg: 'var(--radius)',
+          md: 'calc(var(--radius) - 3px)',
+          sm: 'calc(var(--radius) - 5px)',
+          xl: 'calc(var(--radius) + 4px)',
+        },
+      }
+    }
+  }
+</script>
+<style>
+  :root{
+    --background: 0 0% 100%;
+    --foreground: 222 20% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 20% 12%;
+    --primary: 209 47% 23%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 25% 96%;
+    --secondary-foreground: 222 20% 16%;
+    --muted: 210 25% 96%;
+    --muted-foreground: 217 12% 42%;
+    --accent: 210 30% 94%;
+    --accent-foreground: 222 20% 16%;
+    --border: 217 20% 89%;
+    --input: 217 20% 89%;
+    --ring: 209 47% 23%;
+    --gold: 38 43% 47%;
+    --gold-foreground: 30 40% 18%;
+    --radius: 0.75rem;
+  }
+  html.dark{
+    --background: 222 26% 7%;
+    --foreground: 210 20% 94%;
+    --card: 222 22% 10%;
+    --card-foreground: 210 20% 94%;
+    --primary: 205 55% 62%;
+    --primary-foreground: 222 30% 10%;
+    --secondary: 222 18% 15%;
+    --secondary-foreground: 210 20% 94%;
+    --muted: 222 18% 14%;
+    --muted-foreground: 216 10% 65%;
+    --accent: 222 18% 16%;
+    --accent-foreground: 210 20% 94%;
+    --border: 222 16% 20%;
+    --input: 222 16% 20%;
+    --ring: 205 55% 62%;
+    --gold: 40 55% 62%;
+    --gold-foreground: 40 60% 12%;
+  }
+  html{scroll-behavior:smooth; scroll-padding-top:4.5rem;}
+  body{
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  .hero-enter{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.22,.61,.36,1) .05s forwards;}
+  @keyframes rise{to{opacity:1; transform:none;}}
+  ::selection{ background: hsl(var(--gold) / .3); }
+</style>
+</head>
+<body class="bg-background text-foreground font-sans antialiased">
+
+<!-- ============ NAV ============ -->
+<header class="sticky top-0 z-50 border-b border-border/80 bg-background/75 backdrop-blur-lg" style="padding-top:env(safe-area-inset-top,0px)">
+  <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-5">
+    <span class="text-sm font-semibold tracking-tight">Kaiss Redouane</span>
+    <nav class="hidden md:flex items-center gap-1 text-sm">
+      <a href="#about" class="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">Profil</a>
+      <a href="#parcours" class="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">Parcours</a>
+      <a href="#publications" class="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">Publications</a>
+      <a href="#production" class="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">Production</a>
+      <a href="#contact" class="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">Contact</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="themeToggle" aria-label="Changer de thème" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-accent transition-colors">
+        <svg id="iconSun" class="h-4 w-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
+      <button id="navToggle" aria-label="Menu" class="md:hidden inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="mobileNav" class="hidden md:hidden border-t border-border bg-background">
+    <a href="#about" class="block px-5 py-3 text-sm border-b border-border">Profil</a>
+    <a href="#parcours" class="block px-5 py-3 text-sm border-b border-border">Parcours</a>
+    <a href="#publications" class="block px-5 py-3 text-sm border-b border-border">Publications</a>
+    <a href="#production" class="block px-5 py-3 text-sm border-b border-border">Production</a>
+    <a href="#contact" class="block px-5 py-3 text-sm">Contact</a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero-enter mx-auto max-w-5xl px-5 pt-16 pb-20 md:pt-24 md:pb-24">
+  <div class="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-12 items-center">
+    <div>
+      <span class="inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground mb-5">
+        Settat, Maroc
+      </span>
+      <h1 class="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.08] mb-3">
+        Kaiss Redouane
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed max-w-xl mb-8">
+        Doctorant chercheur en Sciences Économiques — Université Hassan 1er, Faculté d'Économie et de Gestion (FEG Settat)
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="#publications" class="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">Voir les publications</a>
+        <a href="#contact" class="inline-flex items-center justify-center rounded-md border border-border bg-background px-5 py-2.5 text-sm font-medium hover:bg-accent transition-colors">Me contacter</a>
+      </div>
+    </div>
+    <div class="justify-self-center md:justify-self-end">
+      <div class="h-40 w-40 md:h-48 md:w-48 rounded-full overflow-hidden border border-border shadow-sm">
+        <img src="data:image/jpeg;base64,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" alt="Portrait de Kaiss Redouane" class="h-full w-full object-cover">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="border-y border-border bg-primary text-primary-foreground">
+  <div class="mx-auto max-w-5xl px-5 py-14 grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+    <div><div class="text-3xl md:text-4xl font-semibold" style="color:hsl(var(--gold))">14</div><div class="text-xs mt-2 opacity-80">Publications Scopus</div></div>
+    <div><div class="text-3xl md:text-4xl font-semibold" style="color:hsl(var(--gold))">20</div><div class="text-xs mt-2 opacity-80">Communications</div></div>
+    <div><div class="text-3xl md:text-4xl font-semibold" style="color:hsl(var(--gold))">15</div><div class="text-xs mt-2 opacity-80">Chapitres d'ouvrages</div></div>
+    <div><div class="text-3xl md:text-4xl font-semibold" style="color:hsl(var(--gold))">4</div><div class="text-xs mt-2 opacity-80">Livres édités</div></div>
+    <div><div class="text-3xl md:text-4xl font-semibold" style="color:hsl(var(--gold))">11</div><div class="text-xs mt-2 opacity-80">Mémoires encadrés</div></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="mx-auto max-w-5xl px-5 py-20 grid grid-cols-1 md:grid-cols-2 gap-12">
+  <div>
+    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-5">Profil</h2>
+    <p class="text-muted-foreground leading-relaxed mb-4">Ma thèse porte sur l'eau et la croissance économique au Maroc, analysée à travers les Objectifs de développement durable. J'y combine économétrie des séries temporelles et modèles de panel pour comprendre comment la rareté hydrique redessine la trajectoire économique du pays.</p>
+    <p class="text-muted-foreground leading-relaxed">En parallèle, j'explore ce que l'intelligence artificielle apporte à ces questions : prévision climatique, scoring, et modèles d'aide à la décision pour l'agriculture et la sécurité alimentaire. J'enseigne l'analyse de données et l'économie à FEG Settat, à la Faculté Aïn Sebaâ et chez EPIM Afrique.</p>
+  </div>
+  <ul class="space-y-3">
+    <li class="rounded-lg border border-border bg-card p-4">
+      <span class="font-medium">Économétrie appliquée</span>
+      <span class="text-muted-foreground"> — séries temporelles, VECM, VAR, SVAR, ARDL, NARDL, panel</span>
+    </li>
+    <li class="rounded-lg border border-border bg-card p-4">
+      <span class="font-medium">Modèles qualitatifs</span>
+      <span class="text-muted-foreground"> — Logit-Probit, analyse de données qualitatives et quantitatives</span>
+    </li>
+    <li class="rounded-lg border border-border bg-card p-4">
+      <span class="font-medium">Machine Learning &amp; Data Science</span>
+      <span class="text-muted-foreground"> — deep learning, prévision, modèles prédictifs</span>
+    </li>
+    <li class="rounded-lg border border-border bg-card p-4">
+      <span class="font-medium">Analyses économiques</span>
+      <span class="text-muted-foreground"> — micro et macroéconomie, statistique et probabilités</span>
+    </li>
+    <li class="rounded-lg border border-border bg-card p-4">
+      <span class="font-medium">Management</span>
+      <span class="text-muted-foreground"> — logistique et supply chain</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PARCOURS ============ -->
+<section id="parcours" class="border-t border-border bg-muted/40">
+  <div class="mx-auto max-w-5xl px-5 py-20">
+    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-2">Parcours</h2>
+    <p class="text-muted-foreground mb-12">Formation et enseignement, du baccalauréat au doctorat en cours.</p>
+
+    <div class="relative border-l border-border pl-8 space-y-10" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============ PUBLICATIONS ============ -->
+<section id="publications" class="mx-auto max-w-5xl px-5 py-20">
+  <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-2">Publications scientifiques</h2>
+  <p class="text-muted-foreground mb-10">14 articles indexés Scopus, sur l'eau, le climat et l'apport de l'IA aux systèmes économiques et agricoles.</p>
+  <div id="pubList" class="rounded-xl border border-border divide-y divide-border overflow-hidden bg-card"></div>
+</section>
+
+<!-- ============ PRODUCTION (tabs) ============ -->
+<section id="production" class="border-t border-border bg-muted/40">
+  <div class="mx-auto max-w-5xl px-5 py-20">
+    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-2">Communications, livres &amp; chapitres</h2>
+    <p class="text-muted-foreground mb-8">Vingt communications en conférence, quatre ouvrages collectifs dirigés, quinze chapitres publiés.</p>
+
+    <div class="inline-flex items-center rounded-lg bg-muted border border-border p-1 mb-8" id="tabs">
+      <button data-tab="comm" class="tab-btn rounded-md px-4 py-1.5 text-sm font-medium bg-background shadow-sm">Communications</button>
+      <button data-tab="books" class="tab-btn rounded-md px-4 py-1.5 text-sm font-medium text-muted-foreground">Livres édités</button>
+      <button data-tab="chapters" class="tab-btn rounded-md px-4 py-1.5 text-sm font-medium text-muted-foreground">Chapitres</button>
+    </div>
+
+    <div class="tab-panel" id="panel-comm">
+      <div id="commList" class="rounded-xl border border-border divide-y divide-border overflow-hidden bg-card"></div>
+      <button id="commToggle" class="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+        <span id="commToggleLabel">Voir les 20 communications</span>
+        <svg class="h-3.5 w-3.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="tab-panel hidden" id="panel-books">
+      <div id="booksList" class="rounded-xl border border-border divide-y divide-border overflow-hidden bg-card"></div>
+    </div>
+
+    <div class="tab-panel hidden" id="panel-chapters">
+      <div id="chaptersList" class="rounded-xl border border-border divide-y divide-border overflow-hidden bg-card"></div>
+      <button id="chapToggle" class="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+        <span id="chapToggleLabel">Voir les 15 chapitres</span>
+        <svg class="h-3.5 w-3.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills" class="mx-auto max-w-5xl px-5 py-20">
+  <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-10">Compétences &amp; outils</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <div>
+      <h3 class="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">Logiciels &amp; outils</h3>
+      <div class="flex flex-wrap gap-2" id="toolsPills"></div>
+    </div>
+    <div>
+      <h3 class="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">Bureautique</h3>
+      <div class="flex flex-wrap gap-2" id="officePills"></div>
+    </div>
+    <div>
+      <h3 class="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">Langues</h3>
+      <div class="flex flex-wrap gap-2" id="langPills"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="border-t border-border bg-muted/40">
+  <div class="mx-auto max-w-3xl px-5 py-24 text-center">
+    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-3">Discutons de votre projet de recherche</h2>
+    <p class="text-muted-foreground mb-8">Settat, Maroc — disponible pour collaborations, relectures et interventions.</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="mailto:redouane.kaiss.doc@uhp.ac.ma" class="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">redouane.kaiss.doc@uhp.ac.ma</a>
+      <a href="tel:+212608907296" class="inline-flex items-center justify-center rounded-md border border-border bg-background px-5 py-2.5 text-sm font-medium hover:bg-accent transition-colors">+212 6 08 90 72 96</a>
+    </div>
+  </div>
+</section>
+
+<footer class="py-8 text-center text-xs text-muted-foreground">
+  Kaiss Redouane — Doctorant chercheur, Université Hassan 1er (FEG Settat)
+</footer>
+
+<script>
+// ---------- Data ----------
+const timeline = [
+  {date:"Depuis 2024", title:"Doctorat en Sciences Économiques", org:"Faculté d'Économie et de Gestion (FEG), Settat",
+   detail:"Thèse : « L'eau et la croissance économique au Maroc : une analyse économétrique aux Objectifs de développement durable »"},
+  {date:"En cours", title:"Professeur vacataire", org:"EPIM Afrique",
+   table:{head:["Module"], rows:[
+     ["Introduction à l'analyse des données et au Management Stratégique"],
+     ["Analyse statistique et modélisation des données"],
+     ["Collecte, traitement et visualisation des données"],
+     ["Data analyse pour la prise de décision"]
+   ]}},
+  {date:"En cours", title:"Professeur vacataire", org:"FEG Settat & Faculté Aïn Sebaâ",
+   table:{head:["Module","Semestre","Filière"], rows:[
+     ["Mathématiques financières","S2","Sciences de Gestion"],
+     ["Comptabilité générale","S2","Sciences de Gestion"],
+     ["Macroéconomie 2","S3","Sciences Économiques"],
+     ["Macroéconomie 2","S2","Sciences de Gestion"],
+     ["Microéconomie","S2","Sciences Économiques (Aïn Sebaâ)"]
+   ]}},
+  {date:"2021", title:"Master en Ingénierie de la Décision", org:"Faculté d'Économie et de Gestion (FEG), Settat"},
+  {date:"2015", title:"Licence fondamentale en Sciences Économiques", org:"Faculté des Sciences Juridiques, Économiques et Sociales, Université Hassan 1er, Settat"},
+  {date:"2012", title:"Baccalauréat — Sciences Physiques & Chimie", org:"Lycée Errazi, Settat"}
+];
+
+const publications = [
+  {t:"Impact of Climate Change on Water Resources and Ecological Sustainability in Morocco: A 1990–2022 Analysis", j:"Research in Ecology", q:"Q3", rank:"1er auteur"},
+  {t:"Water Stress and Regional Governance in Morocco: Pathways to Agricultural Resilience through Advanced Regionalization", j:"Research on World Agricultural Economy", q:"Q3", rank:"1er auteur"},
+  {t:"Structural Perspectives on Sustainable Water Resource Management in Morocco", j:"Research in Ecology", q:"Q3", rank:"1er auteur"},
+  {t:"An Overview of Artificial Intelligence-Driven Intelligent Agronomy for Sustainable Productivity and Agri-Finance Transformation", j:"ES Food & Agroforestry", q:"Q1", rank:"1er auteur", url:"https://www.researchgate.net/publication/398651463_An_Overview_of_Artificial_Intelligence-Driven_Intelligent_Agronomy_for_Sustainable_Productivity_and_Agri-Finance_Transformation"},
+  {t:"Artificial Intelligence-Based Forecasting and Supply Optimization Network Using Hybrid Deep Learning and Optimization for Sustainable Food Systems", j:"ES Food & Agroforestry", q:"Q1", rank:"1er auteur", url:"https://www.researchgate.net/publication/398648748_Artificial_Intelligence-Based_Forecasting_and_Supply_Optimization_Network_Using_Hybrid_Deep_Learning_and_Optimization_for_Sustainable_Food_Systems"},
+  {t:"The Economic Implications of Sustainable Finance: A Bibliometric and Content Analysis", j:"Journal of Cultural Analysis and Social Change", q:"Q2", rank:"2e auteur"},
+  {t:"Statistical Analysis of Drivers of Environmental Education and Climate Resilience Through School-Based Environmental Clubs: A Case Study from Morocco", j:"Journal of Environmental & Earth Sciences", q:"Q4", rank:"2e auteur"},
+  {t:"Citizen Participation and Ecosystem-Based Territorial Adaptation to Climate Change in Morocco: A Case Study from Settat", j:"Research in Ecology", q:"Q3", rank:"3e auteur"},
+  {t:"AI-driven Machine Learning for Farmers' Climate Change Adaptation Using the Multivariate Probit Model: Insights for Sustainable Resource Systems", j:"International Journal of Environmental Science and Development", q:"Q3", rank:"2e auteur", url:"https://ojs.ejournal.net/index.php/ijesd/index"},
+  {t:"Toward Regional Food Sovereignty: An Analysis of the Economic Costs of Uncoordinated Cereal Import Dependency in North Africa", j:"Journal of Information Systems Engineering and Management", q:"Q3", rank:"2e auteur"},
+  {t:"Future Challenges to Food Security in Morocco Between Geostrategy and Climate Change", j:"Journal of Information Systems Engineering and Management", q:"Q3", rank:"6e auteur"},
+  {t:"Enhancing Environmental Sustainability through Machine Learning: Predicting Drug Solubility (LogS) for Ecotoxicity Assessment and Green Pharmaceutical Design", j:"Journal of Environmental & Earth Sciences", q:"Q4", rank:"3e auteur", url:"https://journals.bilpubgroup.com/index.php/jees/article/view/8866"},
+  {t:"The Effectiveness of Internal Control Tested by the Characteristics of the Company and Its Manager: A Study on a Sample of Moroccan Companies Listed on the Casablanca Stock Exchange", j:"International Journal of Accounting and Economics Studies", q:"Q4", rank:"4e auteur"},
+  {t:"L'impact de l'adoption des normes IFRS sur l'information financière, la gestion des résultats et la titrisation : le cas du fonds de titrisation FT Auto Mobility", j:"Journal of Information Systems Engineering and Management", q:"Q3", rank:"3e auteur", url:"https://scholar.google.com/citations?view_op=view_citation&hl=fr&user=v4TgFmYAAAAJ&citation_for_view=v4TgFmYAAAAJ:Y0pCki6q_DkC"}
+];
+
+const communications = [
+  {t:"Renewable Energy as a Catalyst for Economic Development in Morocco", conf:"IMED 2026", place:"Kota Kinabalu, Malaisie", date:"6–7 mars 2026", url:"https://ieeexplore.ieee.org/document/11484395/"},
+  {t:"A Generative AI-Driven Cloud Framework for Predictive Optimization in Smart Manufacturing Ecosystems", conf:"IMED 2026", place:"Kota Kinabalu, Malaisie", date:"6–7 mars 2026", url:"https://ieeexplore.ieee.org/document/11484232/"},
+  {t:"Securing Industry 5.0 Financial Workflows with Blockchain-AI Convergence", conf:"IMED 2026", place:"Kota Kinabalu, Malaisie", date:"6–7 mars 2026", url:"https://ieeexplore.ieee.org/document/11484103/"},
+  {t:"Adaptive Cloud-Native Architectures for Scalable and Energy-Efficient Smart Manufacturing Systems", conf:"IMED 2026", place:"Kota Kinabalu, Malaisie", date:"6–7 mars 2026", url:"https://ieeexplore.ieee.org/document/11484430/"},
+  {t:"A Qualitative Water–Economy Governance Framework for Climate-Resilient Water Management in Morocco", conf:"CV-S3 2026", place:"MAHE, Dubaï", date:"23–24 sept. 2026"},
+  {t:"A Governing Agricultural Water for Rural Economic Resilience in Morocco: A Qualitative Method Design", conf:"CV-S3 2026", place:"MAHE, Dubaï", date:"23–24 sept. 2026"},
+  {t:"A Morocco Water–Circular Economy Nexus (MOWACEN)", conf:"CV-S3 2026", place:"MAHE, Dubaï", date:"23–24 sept. 2026"},
+  {t:"Dynamics of Food Insecurity: Explorations through the FIES and Economic Indicators", conf:"EAMCON 2026", place:"Shinawatra University, Bangkok", date:"8–10 juillet 2026"},
+  {t:"Food Product Prices in Morocco: Between National and International Dual Interactions (2017–2026)", conf:"EAMCON 2026", place:"Shinawatra University, Bangkok", date:"8–10 juillet 2026"},
+  {t:"Machine Learning AI-Based Random Forest Regression in Analyzing Climate Impacts on Economic Growth", conf:"2nd International Symposium on Green Technologies and Application", place:"Portalegre, Portugal", date:"19–21 nov. 2025"},
+  {t:"L'eau et la croissance économique au Maroc : une analyse économétrique intégrée aux ODD", conf:"Congrès international des ressources naturelles et le développement durable", place:"FSJES Kénitra", date:"17 juillet 2025"},
+  {t:"L'eau et la croissance économique au Maroc (poster)", conf:"4e édition de la Journée du doctorant", place:"ENCG Settat", date:"30 avril 2025"},
+  {t:"Climate Import, Water, and Agricultural Resilience", conf:"ICOSES 2025 — Water Energy and Food Nexus", place:"FSJES El Jadida", date:"24–26 avril 2025"},
+  {t:"L'influence des précipitations sur les exportations agricoles marocaines : modèle ARDL", conf:"Le modèle de développement basé sur l'économie verte", place:"FSJES El Kelaa Des Sraghna", date:"12 février 2025"},
+  {t:"La rareté de l'eau et la croissance économique", conf:"Innovation on Quantitative and Qualitative Research", place:"FSJES Tétouan", date:"21–23 février 2025"},
+  {t:"Le futur de la sécurité alimentaire au Maroc : défis actuels et perspectives", conf:"Innovation on Quantitative and Qualitative Research", place:"FSJES Tétouan", date:"21–23 février 2025"},
+  {t:"Évolution de la production agricole : rôle des technologies innovantes — cas du dessalement", conf:"Eau et Dessalement au Maroc", place:"FSJES Ain Chock", date:"22 février 2025"},
+  {t:"Évolution de la production agricole : défis, tendances et opportunités", conf:"L'Économie Agroalimentaire (EA'25)", place:"FSJES Ain Chock", date:"29–30 avril 2025"},
+  {t:"Impact of rainfall on Moroccan agricultural export: an econometric study based on an ARDL model", conf:"Data2025 — Sustainable Development", place:"Centre culturel Ahmed Boukmakh, Tanger", date:"7–9 mai 2025"},
+  {t:"Stratégies de gestion durable des ressources en eau au Maroc", conf:"Résilience Économique au Maroc : Facteurs Clés et Perspectives d'Avenir", place:"FSJES de Mohammedia", date:"22–23 mai 2025"}
+];
+
+const books = [
+  {t:"Artificial Intelligence for Sustainable Water Engineering: A Socioeconomic Perspective", pub:"CRC Press | Taylor & Francis Group"},
+  {t:"Intelligent Learning Trajectories: Machine Learning and Blockchain-Based Predictive Education Analytics", pub:"Springer"},
+  {t:"Climate Change, Justice & Sustainable Development in the Global South", pub:"Springer"},
+  {t:"Artificial Intelligence and Internet of Things in Industrial Engineering Focused on Intelligent Manufacturing and Smart Operations", pub:"IGI Global"}
+];
+
+const chapters = [
+  {t:"AI and Sustainable Water Economics—An Introduction", pub:"Taylor & Francis"},
+  {t:"AI in Public Policy for Water and Climate Governance", pub:"Taylor & Francis"},
+  {t:"AI in Public Policy for Water and Climate Governance", pub:"Taylor & Francis"},
+  {t:"Machine Learning and AI-Based Random Forest Regression in Analyzing Climate Impacts on Economic Growth", pub:"Springer"},
+  {t:"Impact of Rainfall on Moroccan Agricultural Exports: An Econometric Study Based on an ARDL Model", pub:"Springer"},
+  {t:"Technical Innovation in Farming 4.0 for the Future of Sustainable Agriculture", pub:"Springer"},
+  {t:"Challenges in Linear Waste Systems: A Critical Look at Conventional Models and Their Environmental Effects", pub:"Springer"},
+  {t:"Biochar and Soil Microbial Activity", pub:"Springer"},
+  {t:"Water Security and Climate Change in Morocco: Vulnerabilities, Adaptation Strategies, and Policy Frameworks", pub:"Springer"},
+  {t:"Climate Justice, Water, and Sustainable Development: An Integrated Theoretical Framework", pub:"Springer"},
+  {t:"Urbanization, Infrastructure, and Climate Resilience: Navigating Growth, Risk, and Sustainability", pub:"Springer"},
+  {t:"Informal Enterprise Formalization, Social Inclusion, and Sustainable Development in the Global South", pub:"Springer"},
+  {t:"Food Sovereignty, Smallholder Farmers, and Climate Justice through Sustainable Agriculture", pub:"Springer"},
+  {t:"Evaluating the Socio-Economic Impacts of Water Scarcity Using Artificial Intelligence", pub:"Springer"},
+  {t:"Climate Change, Public Health Inequality, and Health Justice in the Global South", pub:"Springer"}
+];
+
+const tools = ["SPSS","EViews","Python","R","STATA","AMOS","SmartPLS","Sphinx","Zotero","NVivo"];
+const office = ["Word","Excel","PowerPoint"];
+const langs = ["Arabe — maternelle","Français — courant","Anglais — intermédiaire"];
+
+// ---------- shadcn-style badge helper ----------
+function qBadgeClass(q){
+  const map = {
+    Q1: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20",
+    Q2: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-500/10 dark:text-sky-400 dark:border-sky-500/20",
+    Q3: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20",
+    Q4: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20",
+  };
+  return map[q] || "bg-muted text-muted-foreground border-border";
+}
+
+// ---------- Render timeline ----------
+const tlRoot = document.getElementById('timeline');
+timeline.forEach(item=>{
+  const dot = document.createElement('div');
+  dot.className = 'relative';
+  let tableHtml = '';
+  if(item.table){
+    const headCells = item.table.head.map(h=>`<th class="text-left font-medium text-muted-foreground px-3 py-2 border-b border-border">${h}</th>`).join('');
+    const rowsHtml = item.table.rows.map(r=>`<tr>${r.map(c=>`<td class="px-3 py-2 border-b border-border last:border-0">${c}</td>`).join('')}</tr>`).join('');
+    tableHtml = `<div class="mt-3 overflow-hidden rounded-lg border border-border">
+      <table class="w-full text-sm"><thead><tr>${headCells}</tr></thead><tbody>${rowsHtml}</tbody></table>
+    </div>`;
+  }
+  dot.innerHTML = `
+    <span class="absolute -left-[41px] top-1 h-3 w-3 rounded-full bg-background border-2" style="border-color:hsl(var(--gold))"></span>
+    <div class="text-xs font-semibold mb-1" style="color:hsl(var(--gold))">${item.date}</div>
+    <div class="text-lg font-semibold">${item.title}</div>
+    <div class="text-sm text-muted-foreground italic mb-1">${item.org}</div>
+    ${item.detail ? `<p class="text-sm text-muted-foreground leading-relaxed mt-2">${item.detail}</p>` : ''}
+    ${tableHtml}
+  `;
+  tlRoot.appendChild(dot);
+});
+
+// ---------- Render publications ----------
+const pubList = document.getElementById('pubList');
+publications.forEach((p,i)=>{
+  const row = document.createElement('div');
+  row.className = 'p-5 flex flex-col sm:flex-row sm:items-start gap-3 hover:bg-accent/50 transition-colors';
+  const titleHtml = p.url
+    ? `<a href="${p.url}" target="_blank" rel="noopener" class="underline decoration-1 underline-offset-2 hover:text-primary" style="text-decoration-color:hsl(var(--gold))">${p.t}</a>`
+    : p.t;
+  row.innerHTML = `
+    <span class="text-xs text-muted-foreground font-mono pt-0.5 sm:w-6 shrink-0">${String(i+1).padStart(2,'0')}</span>
+    <div class="flex-1">
+      <p class="text-[15px] font-medium leading-snug mb-1">${titleHtml}</p>
+      <p class="text-xs text-muted-foreground">${p.j} · Scopus / ${p.q} · ${p.rank}</p>
+    </div>
+    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium shrink-0 ${qBadgeClass(p.q)}">${p.q}</span>
+  `;
+  pubList.appendChild(row);
+});
+
+// ---------- Render communications ----------
+const commList = document.getElementById('commList');
+communications.forEach((c,i)=>{
+  const row = document.createElement('div');
+  row.className = 'p-5 hover:bg-accent/50 transition-colors' + (i>=5 ? ' hidden comm-extra' : '');
+  const titleHtml = c.url
+    ? `<a href="${c.url}" target="_blank" rel="noopener" class="underline decoration-1 underline-offset-2 hover:text-primary" style="text-decoration-color:hsl(var(--gold))">${c.t}</a>`
+    : c.t;
+  row.innerHTML = `<p class="text-[15px] font-medium leading-snug mb-1">${titleHtml}</p>
+    <p class="text-xs text-muted-foreground">${c.conf} — ${c.place} · ${c.date}</p>`;
+  commList.appendChild(row);
+});
+document.getElementById('commToggle').addEventListener('click', function(){
+  const items = document.querySelectorAll('.comm-extra');
+  const opening = this.classList.toggle('open');
+  items.forEach(el=> el.classList.toggle('hidden', !opening));
+  document.getElementById('commToggleLabel').textContent = opening ? 'Réduire' : 'Voir les 20 communications';
+  this.querySelector('svg').style.transform = opening ? 'rotate(180deg)' : '';
+});
+
+// ---------- Render books ----------
+const booksList = document.getElementById('booksList');
+books.forEach(b=>{
+  const row = document.createElement('div');
+  row.className = 'p-5 hover:bg-accent/50 transition-colors flex items-start justify-between gap-4';
+  row.innerHTML = `<p class="text-[15px] font-medium leading-snug">${b.t}</p>
+    <span class="text-xs text-muted-foreground whitespace-nowrap pt-0.5">${b.pub}</span>`;
+  booksList.appendChild(row);
+});
+
+// ---------- Render chapters ----------
+const chaptersList = document.getElementById('chaptersList');
+chapters.forEach((c,i)=>{
+  const row = document.createElement('div');
+  row.className = 'p-5 hover:bg-accent/50 transition-colors flex items-start justify-between gap-4' + (i>=5 ? ' hidden chap-extra' : '');
+  row.innerHTML = `<p class="text-[15px] font-medium leading-snug">${c.t}</p>
+    <span class="text-xs text-muted-foreground whitespace-nowrap pt-0.5">${c.pub}</span>`;
+  chaptersList.appendChild(row);
+});
+document.getElementById('chapToggle').addEventListener('click', function(){
+  const items = document.querySelectorAll('.chap-extra');
+  const opening = this.classList.toggle('open');
+  items.forEach(el=> el.classList.toggle('hidden', !opening));
+  document.getElementById('chapToggleLabel').textContent = opening ? 'Réduire' : 'Voir les 15 chapitres';
+  this.querySelector('svg').style.transform = opening ? 'rotate(180deg)' : '';
+});
+
+// ---------- Skills pills ----------
+function renderPills(containerId, items){
+  const root = document.getElementById(containerId);
+  items.forEach(t=>{
+    const span = document.createElement('span');
+    span.className = 'inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-xs text-secondary-foreground';
+    span.textContent = t;
+    root.appendChild(span);
+  });
+}
+renderPills('toolsPills', tools);
+renderPills('officePills', office);
+renderPills('langPills', langs);
+
+// ---------- Tabs ----------
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>{
+      b.classList.remove('bg-background','shadow-sm');
+      b.classList.add('text-muted-foreground');
+    });
+    btn.classList.add('bg-background','shadow-sm');
+    btn.classList.remove('text-muted-foreground');
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));
+    document.getElementById('panel-'+btn.dataset.tab).classList.remove('hidden');
+  });
+});
+
+// ---------- Mobile nav ----------
+document.getElementById('navToggle').addEventListener('click', ()=>{
+  document.getElementById('mobileNav').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileNav a').forEach(a=>{
+  a.addEventListener('click', ()=> document.getElementById('mobileNav').classList.add('hidden'));
+});
+
+// ---------- Theme toggle ----------
+const root = document.documentElement;
+const sunIcon = document.getElementById('iconSun');
+const moonIcon = document.getElementById('iconMoon');
+function applyTheme(mode){
+  root.classList.toggle('dark', mode === 'dark');
+  sunIcon.classList.toggle('hidden', mode !== 'dark');
+  moonIcon.classList.toggle('hidden', mode === 'dark');
+}
+let storedTheme = null;
+try { storedTheme = localStorage.getItem('kr-theme'); } catch(e){}
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+applyTheme(storedTheme || (prefersDark ? 'dark' : 'light'));
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  const next = root.classList.contains('dark') ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem('kr-theme', next); } catch(e){}
+});
+</script>
+</body>
+</html>
